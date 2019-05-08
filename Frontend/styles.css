@@ -1,0 +1,11 @@
+.col {
+   margin: 1%; 
+}
+
+body{
+   background: url("backgnd.jpg");
+}
+
+#cardH{
+      display:none
+}
