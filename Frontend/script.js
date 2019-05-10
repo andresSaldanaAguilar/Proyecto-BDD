@@ -15,3 +15,7 @@ $(document).ready(function() {
     });
 
 });
+
+$("#agregarPredicado").click(function() {
+    $("#PredicadosSimples").append($("#atributo option:selected" ).text()+$("#operador option:selected" ).text()+$("#valor option:selected" ).text()+"\n");
+});

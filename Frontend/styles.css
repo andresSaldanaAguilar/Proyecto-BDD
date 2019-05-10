@@ -1,11 +1,15 @@
 .col {
-   margin: 1%; 
+   margin: 0.5%; 
 }
 
 body{
    background: url("backgnd.jpg");
 }
 
-#cardH{
+.card{
+   margin: 1%;
+}
+
+#cardV{
       display:none
 }
