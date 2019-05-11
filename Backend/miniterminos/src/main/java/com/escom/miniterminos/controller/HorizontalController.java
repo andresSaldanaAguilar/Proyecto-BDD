@@ -30,6 +30,8 @@ public class HorizontalController {
 	public String validaPredicados(String predicados) {
 		//Funcion encargada de retornar un arreglo de cadenas con los predicados validos
 		System.out.println(predicados);
+		String[] arregloPredicados = predicados.split("\n");
+		System.out.println(arregloPredicados.length);
 		return "";
 	}
 
