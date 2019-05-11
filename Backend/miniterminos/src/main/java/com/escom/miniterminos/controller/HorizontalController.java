@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HorizontalController {
 	
-	//Esta funcion se llama desde que la pagina se carga y es la encargada
-	//de traer las relaciones de la BD
+	//Esta funcion se llama desde que la pagina cuando se carga 
+	//retorna las relaciones de la base de datos
 	@GetMapping("/relaciones")
 	public String getRelaciones() {
 		//Funcion que consigue las relaciones de la base de datos
