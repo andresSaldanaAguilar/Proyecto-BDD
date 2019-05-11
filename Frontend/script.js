@@ -32,37 +32,37 @@ $("#agregarPredicado").click(function() {
 $("#validarPredicados").click(function() {
 
     text = $("#PredicadosSimples").val();
-    JSON_data = textToJSON(text);
-    console.log(JSON_data);
-    $.ajax({                        
-        url: 'http://localhost:8080/validar/predicados',                     
-        type: 'POST',                 
-        data: JSON_data, 
-        headers: {
-            'Content-Type': 'application/json'
+    text.replace("\n", "_");
+
+    $.ajax({
+        url: 'http://localhost:8080/validar/predicados',
+        type: 'GET',
+        data: { 
+            predicados: text,
         },
-        success: function(data)             
-        {
-                       
+        dataType: 'JSON', 
+        success: function(res) {
+            
         }
     });
+
 });
 
-$("#relacion").change(function() {
+$("#relacion").change(function() {   
+    text = $( "#relacion option:selected" ).text();
+
     $.ajax({
         url: 'http://localhost:8080/atributos',
         type: 'GET',
-        dataType: 'text', 
+        data: { 
+            nombreAtributo: text,
+        },
+        dataType: 'JSON', 
         success: function(res) {
-            console.log(res);
+            
         }
     });
 });
 
-function textToJSON(text){
-    JSON_obj = {};
-    JSON_obj['predicados'] = text;
-    return JSON.stringify(JSON_obj);
-}
 
 
