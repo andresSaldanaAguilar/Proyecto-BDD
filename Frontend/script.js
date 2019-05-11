@@ -59,7 +59,9 @@ $("#relacion").change(function() {
         },
         dataType: 'JSON', 
         success: function(res) {
-            console.log(res);
+            res.forEach(element => {
+                $("#atributo").append(new Option(element));  
+            });
         }
     });
 });
