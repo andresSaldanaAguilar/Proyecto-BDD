@@ -55,11 +55,11 @@ $("#relacion").change(function() {
         url: 'http://localhost:8080/atributos',
         type: 'GET',
         data: { 
-            nombreAtributo: text,
+            nombreRelacion: text,
         },
         dataType: 'JSON', 
         success: function(res) {
-            
+            console.log(res);
         }
     });
 });
