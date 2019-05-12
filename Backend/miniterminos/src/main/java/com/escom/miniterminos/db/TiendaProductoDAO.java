@@ -18,43 +18,42 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
-import com.escom.miniterminos.entities.CreditoBean;
+import com.escom.miniterminos.entities.TiendaProductoBean;
 
 @Repository
-public class CreditoDAO {
+public class TiendaProductoDAO {
 	
 	@Qualifier("datasource1")
 	@Autowired
 	private DataSource dataSource;
 	
-	public static class CreditoMapper implements ResultSetMapper<CreditoBean>{
+	public static class TiendaProductoMapper implements ResultSetMapper<TiendaProductoBean>{
 
 		@Override
-		public CreditoBean map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-			CreditoBean credito = new CreditoBean();
-			credito.setIdCredito(r.getInt("idCredito"));
-			credito.setNombre(r.getString("nombre"));
-			credito.setMonto(r.getString("monto"));
-		
-			return credito;
+		public TiendaProductoBean map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+			TiendaProductoBean tiendaProducto = new TiendaProductoBean();
+			tiendaProducto.setidtienda(r.getInt("idtienda"));
+			tiendaProducto.setidproducto(r.getInt("idproducto"));
+            tiendaProducto.setnoExistencias(r.getInt("noExistencias"));
+			return tiendaProducto;
 		}
-		
+	
 	}
 	
-	@RegisterMapper(CreditoMapper.class)
-	interface CreditoSQL{
-		@SqlQuery("SHOW COLUMNS FROM CREDITO")
+	@RegisterMapper(TiendaProductoMapper.class)
+	interface TiendaProductoSQL{
+		@SqlQuery("SHOW COLUMNS FROM TIENDAPRODUCTO")
 		List<String> atributos();
 	}
 	
-	private CreditoSQL createConnection() {
+	private TiendaProductoSQL createConnection() {
 		Connection conn =  DataSourceUtils.getConnection(dataSource);
         Handle handle = DBI.open(conn);
-        return handle.attach(CreditoSQL.class);
+        return handle.attach(TiendaProductoSQL.class);
 	}
 	
 	public List<String> obtenerAtributos(){
-		CreditoSQL creditoSQL = createConnection();
+		TiendaProductoSQL creditoSQL = createConnection();
 		return creditoSQL.atributos();
 	}
 

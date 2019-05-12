@@ -59,6 +59,7 @@ $("#relacion").change(function() {
         },
         dataType: 'JSON', 
         success: function(res) {
+            $('#atributo').find('option').remove()
             res.forEach(element => {
                 $("#atributo").append(new Option(element));  
             });

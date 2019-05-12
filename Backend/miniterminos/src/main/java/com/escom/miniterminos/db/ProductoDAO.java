@@ -18,43 +18,45 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
-import com.escom.miniterminos.entities.CreditoBean;
+import com.escom.miniterminos.entities.ProductoBean;
 
 @Repository
-public class CreditoDAO {
+public class ProductoDAO {
 	
 	@Qualifier("datasource1")
 	@Autowired
 	private DataSource dataSource;
 	
-	public static class CreditoMapper implements ResultSetMapper<CreditoBean>{
+	public static class ProductoMapper implements ResultSetMapper<ProductoBean>{
 
 		@Override
-		public CreditoBean map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-			CreditoBean credito = new CreditoBean();
-			credito.setIdCredito(r.getInt("idCredito"));
-			credito.setNombre(r.getString("nombre"));
-			credito.setMonto(r.getString("monto"));
-		
-			return credito;
+		public ProductoBean map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+			ProductoBean producto = new ProductoBean();
+			producto.setIdProducto(r.getInt("idProducto"));
+			producto.setNombre(r.getString("nombre"));
+            producto.setDescripcion(r.getString("descripcion"));
+			producto.setPrecioUnitario(r.getDouble("precioUnitario"));
+		    producto.setMarca(r.getString("marca"));
+            producto.setIdSubcategoria(r.getInt("idSubcategoria"));
+			return producto;
 		}
 		
 	}
 	
-	@RegisterMapper(CreditoMapper.class)
-	interface CreditoSQL{
-		@SqlQuery("SHOW COLUMNS FROM CREDITO")
+	@RegisterMapper(ProductoMapper.class)
+	interface ProductoSQL{
+		@SqlQuery("SHOW COLUMNS FROM PRODUCTO")
 		List<String> atributos();
 	}
 	
-	private CreditoSQL createConnection() {
+	private ProductoSQL createConnection() {
 		Connection conn =  DataSourceUtils.getConnection(dataSource);
         Handle handle = DBI.open(conn);
-        return handle.attach(CreditoSQL.class);
+        return handle.attach(ProductoSQL.class);
 	}
 	
 	public List<String> obtenerAtributos(){
-		CreditoSQL creditoSQL = createConnection();
+		ProductoSQL creditoSQL = createConnection();
 		return creditoSQL.atributos();
 	}
 

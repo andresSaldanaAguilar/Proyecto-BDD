@@ -6,7 +6,7 @@ public class CreditoBean {
     private String monto;
 
     public Integer getIdCredito() {
-        return idCredito;
+        return this.idCredito;
     }
 
     public void setIdCredito(Integer idCredito) {
@@ -14,7 +14,7 @@ public class CreditoBean {
     }
 
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     public void setNombre(String nombre) {
@@ -22,7 +22,7 @@ public class CreditoBean {
     }
 
     public String getMonto() {
-        return monto;
+        return this.monto;
     }
 
     public void setMonto(String monto) {

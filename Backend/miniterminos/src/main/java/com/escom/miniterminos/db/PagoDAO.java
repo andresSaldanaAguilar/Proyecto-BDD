@@ -18,43 +18,46 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
-import com.escom.miniterminos.entities.CreditoBean;
+import com.escom.miniterminos.entities.PagoBean;
+
 
 @Repository
-public class CreditoDAO {
+public class PagoDAO {
 	
 	@Qualifier("datasource1")
 	@Autowired
 	private DataSource dataSource;
 	
-	public static class CreditoMapper implements ResultSetMapper<CreditoBean>{
+	public static class PagoMapper implements ResultSetMapper<PagoBean>{
 
 		@Override
-		public CreditoBean map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-			CreditoBean credito = new CreditoBean();
-			credito.setIdCredito(r.getInt("idCredito"));
-			credito.setNombre(r.getString("nombre"));
-			credito.setMonto(r.getString("monto"));
-		
-			return credito;
+		public PagoBean map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+			PagoBean pago = new PagoBean();
+			pago.setIdPago(r.getInt("idPago"));
+			pago.setidcredito(r.getInt("idcredito"));
+            pago.setidtienda(r.getInt("idtienda"));
+			pago.setidcliente(r.getInt("idcliente"));
+		    pago.setfechaPago(r.getDate("fechaPago"));
+            pago.setidproducto(r.getInt("idproducto"));
+			return pago;
 		}
 		
 	}
 	
-	@RegisterMapper(CreditoMapper.class)
-	interface CreditoSQL{
-		@SqlQuery("SHOW COLUMNS FROM CREDITO")
+	@RegisterMapper(PagoMapper.class)
+	interface PagoSQL{
+		@SqlQuery("SHOW COLUMNS FROM PAGO")
 		List<String> atributos();
 	}
 	
-	private CreditoSQL createConnection() {
+	private PagoSQL createConnection() {
 		Connection conn =  DataSourceUtils.getConnection(dataSource);
         Handle handle = DBI.open(conn);
-        return handle.attach(CreditoSQL.class);
+        return handle.attach(PagoSQL.class);
 	}
 	
 	public List<String> obtenerAtributos(){
-		CreditoSQL creditoSQL = createConnection();
+		PagoSQL creditoSQL = createConnection();
 		return creditoSQL.atributos();
 	}
 
