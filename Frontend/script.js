@@ -48,25 +48,6 @@ $("#agregarPredicado").click(function() {
     $("#PredicadosSimples").append($("#atributo option:selected" ).text()+$("#operador option:selected" ).text()+$("#valor").val()+"\n");
 });
 
-$("#validarPredicados").click(function() {
-
-    text = $("#PredicadosSimples").val();
-    text.replace("\n", "_");
-
-    $.ajax({
-        url: 'http://localhost:8080/validar/predicados',
-        type: 'GET',
-        data: { 
-            predicados: text,
-        },
-        dataType: 'JSON', 
-        success: function(res) {
-            
-        }
-    });
-
-});
-
 $("#relacion").change(function() {   
     text = $( "#relacion option:selected" ).text();
 
@@ -86,4 +67,84 @@ $("#relacion").change(function() {
     });
 });
 
+$("#validarPredicados").click(function() {
 
+    text = $("#PredicadosSimples").val();
+    text.replace("\n", "_");
+
+    $.ajax({
+        url: 'http://localhost:8080/validar/predicados',
+        type: 'GET',
+        data: { 
+            relacion: $("#relacion").val(),
+            predicados: text,
+        },
+        dataType: 'JSON', 
+        success: function(res) {
+            
+        }
+    });
+
+});
+
+$("#generarFragmentos").click(function() {
+
+    text = $("#PredicadosSimples").val();
+    text.replace("\n", "_");
+
+    $.ajax({
+        url: 'http://localhost:8080/generar/miniterminos',
+        type: 'GET',
+        data: {
+            relacion: $("#relacion").val(),
+            predicados: text,
+        },
+        dataType: 'JSON', 
+        success: function(res) {
+            
+        }
+    });
+
+});
+
+$("#validarFragmentos").click(function() {
+
+    text = $("#Miniterminos").val();
+    text.replace("\n", "_");
+
+    $.ajax({
+        url: 'http://localhost:8080/validar/miniterminos',
+        type: 'GET',
+        data: { 
+            relacion: $("#relacion").val(),
+            miniterminos: text,
+        },
+        dataType: 'JSON', 
+        success: function(res) {
+            
+        }
+    });
+
+});
+
+
+$("#enviar").click(function() {
+
+    text = $("#Miniterminos").val();
+    text.replace("\n", "_");
+
+    $.ajax({
+        url: 'http://localhost:8080/enviar',
+        type: 'GET',
+        data: { 
+            relacion: $("#relacion").val(),
+            sitio: $("#sitio").val(),
+            miniterminos: text,
+        },
+        dataType: 'JSON', 
+        success: function(res) {
+            
+        }
+    });
+
+});

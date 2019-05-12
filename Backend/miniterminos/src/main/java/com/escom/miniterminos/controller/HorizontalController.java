@@ -93,17 +93,40 @@ public class HorizontalController {
 	
 	//Recibe los predicados a válidar, retorna solo los predicados válidos
 	@GetMapping("/validar/predicados{predicados}")
-	public String validaPredicados(String predicados) {
+	public String validaPredicados(String predicados, String relacion) {
 		//Funcion encargada de retornar un arreglo de cadenas con los predicados validos
-		System.out.println(predicados);
+		System.out.println("Relacion:\n"+relacion);
+		System.out.println("Predicados:\n"+predicados);
+		String[] arregloPredicados = predicados.split("\n");
+		return "";
+	}
+	
+	//Recibe los predicados y genera los miniterminos
+	@GetMapping("/generar/miniterminos{predicados}")
+	public String generaMiniterminos(String predicados, String relacion) {
+		System.out.println("Relacion:\n"+relacion);
+		System.out.println("predicados:\n"+predicados);
 		String[] arregloPredicados = predicados.split("\n");
 		return "";
 	}
 
 	//Recibe los miniterminos a válidar, retorna solo los miniterminos válidos
-	@PostMapping("/validar/miniterminos")
-	public String validaMiniterminos() {
-		return "validando miniterminos";
+	@GetMapping("/validar/miniterminos{miniterminos}")
+	public String validaMiniterminos(String miniterminos, String relacion) {
+		System.out.println("Relacion:\n"+relacion);
+		System.out.println("Miniterminos:\n"+miniterminos);
+		String[] arregloPredicados = miniterminos.split("\n");
+		return "";
+	}
+	
+	//Recibe los miniterminos a generar, y donde sse almacenaran
+	@GetMapping("/enviar{miniterminos}")
+	public String enviaMiniterminos(String miniterminos, String relacion, String sitio) {
+		System.out.println("Relacion:\n"+relacion);
+		System.out.println("Miniterminos:\n"+miniterminos);
+		System.out.println("Sitio:\n"+sitio);
+		String[] arregloPredicados = miniterminos.split("\n");
+		return "";
 	}
 
 }
