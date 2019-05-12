@@ -17,9 +17,12 @@ $(document).ready(function() {
     $.ajax({
         url: 'http://localhost:8080/relaciones',
         type: 'GET',
-        dataType: 'text', 
+        dataType: 'JSON', 
         success: function(res) {
-            console.log(res);
+            $('#relacion').find('option').remove()
+            res.forEach(element => {
+                $("#relacion").append(new Option(element));  
+            });
         }
     });
 

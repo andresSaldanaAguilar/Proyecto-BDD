@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.escom.miniterminos.db.BaseDAO;
 import com.escom.miniterminos.db.CategoriaDAO;
 import com.escom.miniterminos.db.ClienteDAO;
 import com.escom.miniterminos.db.CreditoDAO;
@@ -41,15 +42,18 @@ public class HorizontalController {
 	CategoriaDAO categoriaDAO;
 	@Autowired
 	SubcategoriaDAO subcategoriaDAO;
+	@Autowired
+	BaseDAO baseDAO;
 	
 	
 	//Esta funcion se llama desde que la pagina cuando se carga 
 	//retorna las relaciones de la base de datos
 	@GetMapping("/relaciones")
-	public String getRelaciones() {
-		//Funcion que consigue las relaciones de la base de datos
+	public List<String> getRelaciones() {
 		
-		return "relaciones";
+		List<String> list = baseDAO.obtenerTablas();
+		
+		return list;
 	}
 	
 	//Recibe el nombre de la relacion a conseguir sus atributos
@@ -58,33 +62,32 @@ public class HorizontalController {
 		
 		List<String> list = null;
 		
-		if(nombreRelacion.equals("Credito")) {
+		nombreRelacion = nombreRelacion.toLowerCase();
+		
+		if(nombreRelacion.equals("credito")) {
 			list = creditoDAO.obtenerAtributos();
 		}
-		else if(nombreRelacion.equals("Tienda")) {
+		else if(nombreRelacion.equals("tienda")) {
 			list = tiendaDAO.obtenerAtributos();
 		}
-		else if(nombreRelacion.equals("Pago")) {
+		else if(nombreRelacion.equals("pago")) {
 			list = pagoDAO.obtenerAtributos();
 		}
-		else if(nombreRelacion.equals("Cliente")) {
+		else if(nombreRelacion.equals("cliente")) {
 			list = clienteDAO.obtenerAtributos();
 		}
-		else if(nombreRelacion.equals("Producto")) {
+		else if(nombreRelacion.equals("producto")) {
 			list = productoDAO.obtenerAtributos();
 		}
-		else if(nombreRelacion.equals("TiendaProducto")) {
+		else if(nombreRelacion.equals("tiendaproducto")) {
 			list = tiendaproductoDAO.obtenerAtributos();
 		}
-		else if(nombreRelacion.equals("Categoria")) {
+		else if(nombreRelacion.equals("categoria")) {
 			list = categoriaDAO.obtenerAtributos();
 		}
 		else{
 			list = subcategoriaDAO.obtenerAtributos();
 		}
-		
-		
-		
 		return list;
 	}
 	
