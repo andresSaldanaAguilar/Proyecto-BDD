@@ -23,10 +23,26 @@ $(document).ready(function() {
         }
     });
 
+    text = $( "#relacion option:selected" ).text();
+
+    $.ajax({
+        url: 'http://localhost:8080/atributos',
+        type: 'GET',
+        data: { 
+            nombreRelacion: text,
+        },
+        dataType: 'JSON', 
+        success: function(res) {
+            $('#atributo').find('option').remove()
+            res.forEach(element => {
+                $("#atributo").append(new Option(element));  
+            });
+        }
+    });
 });
 
 $("#agregarPredicado").click(function() {
-    $("#PredicadosSimples").append($("#atributo option:selected" ).text()+$("#operador option:selected" ).text()+$("#valor option:selected" ).text()+"\n");
+    $("#PredicadosSimples").append($("#atributo option:selected" ).text()+$("#operador option:selected" ).text()+$("#valor").val()+"\n");
 });
 
 $("#validarPredicados").click(function() {
@@ -66,6 +82,5 @@ $("#relacion").change(function() {
         }
     });
 });
-
 
 

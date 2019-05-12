@@ -175,13 +175,7 @@
 
                                         <div class="form-group">
                                                 <label class="font-weight-light" for="exampleFormControlSelect1">Valor</label>
-                                                <select class="form-control" id="valor">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                    <option>5</option>
-                                                </select>
+                                                <input class="form-control" type="text" id="valor">
                                         </div>
                                         <button id="agregarPredicado" type="button" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Agregar Predicado</button>
                                     </div>
@@ -196,8 +190,8 @@
                                             <textarea class="form-control" id="PredicadosSimples" rows="3"></textarea>
                                         </div>                                
                                         <button id="validarPredicados" type="button" class="btn btn-sm btn-primary"><i class="fas fa-check"></i> Validar</button>
-                                        <button type="button" class="btn btn-sm btn-success"><i class="fas fa-grip-horizontal"></i> Generar Fragmentos</button>
-        
+                                        <button id="generarFragmentos" type="button" class="btn btn-sm btn-success"><i class="fas fa-grip-horizontal"></i> Generar Fragmentos</button>
+                                        
                                     </div>
                                 </div>    
                                 <div class="card">
@@ -207,7 +201,7 @@
                                                 <label class="font-weight-light">Colocar Fragmentos Minitérminos</label>
                                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                         </div>
-                                        <button type="button" class="btn btn-sm btn-primary"><i class="fas fa-check"></i> Validar</button>
+                                        <button id="validarFragmentos" type="button" class="btn btn-sm btn-primary"><i class="fas fa-check"></i> Validar</button>
                                        
                                     </div>
                                 </div>    
@@ -224,7 +218,7 @@
                                             </select>
                                         </div>
     
-                                        <button type="button" class="btn btn-sm btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+                                        <button id="enviar" type="button" class="btn btn-sm btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
     
                                     </div>
                                 </div>
