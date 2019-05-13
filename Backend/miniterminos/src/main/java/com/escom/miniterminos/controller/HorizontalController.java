@@ -95,10 +95,28 @@ public class HorizontalController {
 	@GetMapping("/validar/predicados{predicados}")
 	public String validaPredicados(String predicados, String relacion) {
 		//Funcion encargada de retornar un arreglo de cadenas con los predicados validos
-		System.out.println("Relacion:\n"+relacion);
-		System.out.println("Predicados:\n"+predicados);
+		
+		int x;
+		int validacion1 = 1 , validacion2;
+		
 		String[] arregloPredicados = predicados.split("\n");
-		return "";
+		
+		for( x=0 ; x<arregloPredicados.length ; x++ ){
+			if( baseDAO.evaluar(relacion,arregloPredicados[x]) == 0 ){
+				validacion1 = 0;
+			}
+			System.out.println( baseDAO.evaluar(relacion,arregloPredicados[x] ) );
+		}
+		
+		validacion2 = baseDAO.verificar(relacion, arregloPredicados);
+		
+		
+		if( validacion1 == 1 && validacion2 == 1){
+			return "1";
+		}
+		else{
+			return "0";
+		}
 	}
 	
 	//Recibe los predicados y genera los miniterminos
@@ -113,10 +131,20 @@ public class HorizontalController {
 	//Recibe los miniterminos a válidar, retorna solo los miniterminos válidos
 	@GetMapping("/validar/miniterminos{miniterminos}")
 	public String validaMiniterminos(String miniterminos, String relacion) {
-		System.out.println("Relacion:\n"+relacion);
-		System.out.println("Miniterminos:\n"+miniterminos);
-		String[] arregloPredicados = miniterminos.split("\n");
-		return "";
+		
+		int x;
+		String fin = "";
+		
+		String[] arregloMiniterminos = miniterminos.split("\n");
+		
+		for( x=0 ; x<arregloMiniterminos.length ; x++ ){
+			if( baseDAO.evaluar(relacion,arregloMiniterminos[x].substring(3)) != 0 ){
+				fin += arregloMiniterminos[x] + "\n";
+			}
+		}
+		System.out.println(fin);
+		
+		return fin;
 	}
 	
 	//Recibe los miniterminos a generar, y donde sse almacenaran

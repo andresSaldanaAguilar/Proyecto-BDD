@@ -179,10 +179,11 @@
     
                                         <div class="form-group">
                                             <label class="font-weight-light">Mostrar Predicados Simples</label>
-                                            <textarea class="form-control" id="PredicadosSimples" rows="3"></textarea>
+                                            <textarea class="form-control" id="PredicadosSimples" rows="3" readonly></textarea>
                                         </div>                                
+										<button id="limpiarPredicados" type="button" class="btn btn-sm btn-primary"><i class="fas fa-eraser"></i> Limpiar</button>
                                         <button id="validarPredicados" type="button" class="btn btn-sm btn-primary"><i class="fas fa-check"></i> Validar</button>
-                                        <button id="generarFragmentos" type="button" class="btn btn-sm btn-success"><i class="fas fa-grip-horizontal"></i> Generar Fragmentos</button>
+                                        <button id="generarFragmentos" type="button" class="btn btn-sm btn-success" disabled><i class="fas fa-grip-horizontal"></i> Generar Fragmentos</button>
 
                                     </div>
                                 </div>    
@@ -191,9 +192,9 @@
 
                                         <div class="form-group">
                                                 <label class="font-weight-light">Colocar Fragmentos Minitérminos</label>
-                                                <textarea class="form-control" id="Miniterminos" rows="3"></textarea>
+                                                <textarea class="form-control" id="Miniterminos" rows="3" readonly></textarea>
                                         </div>
-                                        <button id="validarFragmentos" type="button" class="btn btn-sm btn-primary"><i class="fas fa-check"></i> Validar</button>
+                                        <button id="validarFragmentos" type="button" class="btn btn-sm btn-primary" disabled><i class="fas fa-check"></i> Validar</button>
                                        
                                     </div>
                                 </div>    
@@ -208,7 +209,7 @@
                                             </select>
                                         </div>
     
-                                        <button id="enviar" type="button" class="btn btn-sm btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+                                        <button id="enviar" type="button" class="btn btn-sm btn-success"><i class="fas fa-paper-plane"></i> Enviar</button>
     
                                     </div>
                                 </div>
