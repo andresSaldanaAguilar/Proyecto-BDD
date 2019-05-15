@@ -2,9 +2,12 @@ package com.escom.miniterminos.db;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -17,6 +20,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
+
+import com.mysql.jdbc.ResultSetMetaData;
 
 @Repository
 public class BaseDAO {
@@ -46,6 +51,25 @@ public class BaseDAO {
 	public List<String> obtenerTablas(){
 		CategoriaSQL creditoSQL = createConnection();
 		return creditoSQL.tablas();
+	}
+	
+	public List<String> obtenerAtributos(String table){
+		
+		List<String> list = new ArrayList<String>();
+		conn =  DataSourceUtils.getConnection(dataSource);
+		
+		try {
+			stm = conn.createStatement();		
+			rs = stm.executeQuery("show columns from "+table+";");
+			while(rs.next()) {
+				list.add(rs.getString(1));
+			}
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 	
 	public int evaluar( String relacion , String predicado ){

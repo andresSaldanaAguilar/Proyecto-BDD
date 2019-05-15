@@ -29,12 +29,11 @@ $(document).ready(function() {
     });
 
     text = $( "#relacion option:selected" ).text();
-
     $.ajax({
         url: 'http://localhost:8080/atributos',
         type: 'GET',
         data: { 
-            nombreRelacion: text,
+            nombreRelacion: 'colaborausertab',
         },
         dataType: 'JSON', 
         success: function(res) {

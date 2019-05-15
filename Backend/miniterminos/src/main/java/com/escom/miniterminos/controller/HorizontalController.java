@@ -51,9 +51,9 @@ public class HorizontalController {
 	@GetMapping("/relaciones")
 	public List<String> getRelaciones() {
 		
-		List<String> list = baseDAO.obtenerTablas();
-		
+		List<String> list = baseDAO.obtenerTablas();	
 		return list;
+		
 	}
 	
 	//Recibe el nombre de la relacion a conseguir sus atributos
@@ -61,34 +61,10 @@ public class HorizontalController {
 	public List<String> getAtributos(String nombreRelacion) {
 		
 		List<String> list = null;
-		
 		nombreRelacion = nombreRelacion.toLowerCase();
-		
-		if(nombreRelacion.equals("credito")) {
-			list = creditoDAO.obtenerAtributos();
-		}
-		else if(nombreRelacion.equals("tienda")) {
-			list = tiendaDAO.obtenerAtributos();
-		}
-		else if(nombreRelacion.equals("pago")) {
-			list = pagoDAO.obtenerAtributos();
-		}
-		else if(nombreRelacion.equals("cliente")) {
-			list = clienteDAO.obtenerAtributos();
-		}
-		else if(nombreRelacion.equals("producto")) {
-			list = productoDAO.obtenerAtributos();
-		}
-		else if(nombreRelacion.equals("tiendaproducto")) {
-			list = tiendaproductoDAO.obtenerAtributos();
-		}
-		else if(nombreRelacion.equals("categoria")) {
-			list = categoriaDAO.obtenerAtributos();
-		}
-		else{
-			list = subcategoriaDAO.obtenerAtributos();
-		}
+		list = baseDAO.obtenerAtributos(nombreRelacion);
 		return list;
+		
 	}
 	
 	//Recibe los predicados a válidar, retorna solo los predicados válidos
