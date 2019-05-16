@@ -171,6 +171,7 @@ $("#enviar").click(function() {
         data: { 
             relacion: $("#relacion").val(),
             sitio: $("#sitio").val(),
+            nombre: $("#nombre").val(),
             miniterminos: text,
         },
         dataType: 'JSON', 

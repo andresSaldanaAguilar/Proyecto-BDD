@@ -27,23 +27,30 @@ import com.mysql.jdbc.ResultSetMetaData;
 public class BaseDAO {
 	@Qualifier("datasource1")
 	@Autowired
-	private DataSource dataSource;
+	private DataSource dataSource1;
 	
-	Connection conn;
+	@Qualifier("datasource2")
+	@Autowired
+	private DataSource dataSource2;
+	
+	@Qualifier("datasource3")
+	@Autowired
+	private DataSource dataSource3;
+	
+	Connection localConnection,foreignConnection;
 	Statement stm;
 	ResultSet rs;
 
 	
 	interface CategoriaSQL{
 		@SqlQuery("SHOW TABLES")
-		List<String> tablas();
-		
+		List<String> tablas();	
 	}
 	
 	
 	private CategoriaSQL createConnection() {
-		conn =  DataSourceUtils.getConnection(dataSource);
-        Handle handle = DBI.open(conn);
+		localConnection =  DataSourceUtils.getConnection(dataSource1);
+        Handle handle = DBI.open(localConnection);
         return handle.attach(CategoriaSQL.class);
 	}
 	
@@ -56,10 +63,10 @@ public class BaseDAO {
 	public List<String> obtenerAtributos(String table){
 		
 		List<String> list = new ArrayList<String>();
-		conn =  DataSourceUtils.getConnection(dataSource);
+		localConnection =  DataSourceUtils.getConnection(dataSource1);
 		
 		try {
-			stm = conn.createStatement();		
+			stm = localConnection.createStatement();		
 			rs = stm.executeQuery("show columns from "+table+";");
 			while(rs.next()) {
 				list.add(rs.getString(1));
@@ -77,15 +84,15 @@ public class BaseDAO {
 		int res=0;
 		
 		try {
-			conn =  DataSourceUtils.getConnection(dataSource);
-			stm = conn.createStatement();
+			localConnection =  DataSourceUtils.getConnection(dataSource1);
+			stm = localConnection.createStatement();
 			rs = stm.executeQuery("select count(*) FROM "+relacion+" where "+predicado);
 			
 			if(rs.next()){
 				res = Integer.parseInt(rs.getString("count(*)"));
 			}
 			
-			conn.close();
+			localConnection.close();
 			stm.close();
 			rs.close();
 		}
@@ -103,8 +110,8 @@ public class BaseDAO {
 		String cat="";
 		
 		try {
-			conn =  DataSourceUtils.getConnection(dataSource);
-			stm = conn.createStatement();
+			localConnection =  DataSourceUtils.getConnection(dataSource1);
+			stm = localConnection.createStatement();
 			rs = stm.executeQuery("select count(*) FROM "+relacion);
 			
 			if(rs.next()){
@@ -124,7 +131,7 @@ public class BaseDAO {
 				res2 = Integer.parseInt(rs.getString("count(*)"));
 			}
 			
-			conn.close();
+			localConnection.close();
 			stm.close();
 			rs.close();
 		}
@@ -143,6 +150,62 @@ public class BaseDAO {
 		{
 			return 0;
 		}
+	}
+	
+	public boolean enviar(String sitio, String nombreTablas, String relacion, String[] miniterminos) {
+
+		//conexion local, base de datos destino
+		localConnection =  DataSourceUtils.getConnection(dataSource1);
+		
+		//buscando que base de datos es el destino
+		if(sitio.equals("Sitio 1")) {
+			foreignConnection =  DataSourceUtils.getConnection(dataSource1);
+		}
+		else if(sitio.equals("Sitio 2")) {
+			foreignConnection =  DataSourceUtils.getConnection(dataSource2);
+		}
+		else {
+			foreignConnection =  DataSourceUtils.getConnection(dataSource3);
+		}
+		
+		
+		for(int i = 0; i < miniterminos.length ; i++) {
+			try {
+				//creamos las tabla
+				stm = foreignConnection.createStatement();		
+				stm.executeUpdate("CREATE TABLE "+nombreTablas+(i+1)+" LIKE "+relacion+";");
+				
+				stm = localConnection.createStatement();
+				rs = stm.executeQuery("select * FROM "+relacion+" where "+miniterminos[i].substring(4));
+				
+				//poblamos la tabla
+				while(rs.next()) {
+					ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+					int columnsNumber = rsmd.getColumnCount();
+					String query = "";
+					
+					//traemos los valores a insertar
+					for(int j = 1; j <= columnsNumber; j++) {
+
+						//integer
+						if(rsmd.getColumnType(j)== 3 || rsmd.getColumnType(j)== 4 || rsmd.getColumnType(j)== 6 || rsmd.getColumnType(j)== 8) {
+							query += rs.getString(j)+",";
+						}
+						//string
+						else {
+							query += "'"+rs.getString(j)+"',";
+						}						
+					}
+					stm = foreignConnection.createStatement();
+					stm.executeUpdate("insert into "+nombreTablas+(i+1)+" values ("+query.substring(0,query.length()-1)+");");
+				}
+			} 				
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return true;
 	}
 }
 
