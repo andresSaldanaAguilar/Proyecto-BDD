@@ -152,7 +152,7 @@ public class BaseDAO {
 		}
 	}
 	
-	public boolean enviar(String sitio, String nombreTablas, String relacion, String[] miniterminos) {
+	public int enviar(String sitio, String nombreTablas, String relacion, String[] miniterminos) {
 
 		//conexion local, base de datos destino
 		localConnection =  DataSourceUtils.getConnection(dataSource1);
@@ -205,7 +205,103 @@ public class BaseDAO {
 			}
 		}
 		
-		return true;
+		return 1;
+	}
+	
+	public int enviarV(String sitio, String nombreTablas, String relacion, String[] miniterminos) {
+
+		List<String> list = new ArrayList<String>();
+		String[] array;
+		
+		//conexion local, base de datos destino
+		localConnection =  DataSourceUtils.getConnection(dataSource1);
+		
+		//buscando que base de datos es el destino
+		if(sitio.equals("Sitio 1")) {
+			foreignConnection =  DataSourceUtils.getConnection(dataSource1);
+		}
+		else if(sitio.equals("Sitio 2")) {
+			foreignConnection =  DataSourceUtils.getConnection(dataSource2);
+		}
+		else {
+			foreignConnection =  DataSourceUtils.getConnection(dataSource3);
+		}
+		
+		
+		for(int i = 0; i < miniterminos.length ; i++) {
+			try {
+				//creamos las tabla
+				stm = foreignConnection.createStatement();		
+				stm.executeUpdate("CREATE TABLE "+nombreTablas+(i+1)+" LIKE "+relacion+";");
+				
+				stm = localConnection.createStatement();
+				rs = stm.executeQuery("select * FROM "+relacion );
+				
+				//poblamos la tabla
+				while(rs.next()) {
+					ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+					int columnsNumber = rsmd.getColumnCount();
+					String query = "";
+					
+					//traemos los valores a insertar
+					for(int j = 1; j <= columnsNumber; j++) {
+
+						//integer
+						if(rsmd.getColumnType(j)== 3 || rsmd.getColumnType(j)== 4 || rsmd.getColumnType(j)== 6 || rsmd.getColumnType(j)== 8) {
+							query += rs.getString(j)+",";
+						}
+						//string
+						else {
+							query += "'"+rs.getString(j)+"',";
+						}						
+					}
+					stm = foreignConnection.createStatement();
+					stm.executeUpdate("insert into "+nombreTablas+(i+1)+" values ("+query.substring(0,query.length()-1)+");");
+				}
+				
+				array = miniterminos[i].substring(6, miniterminos[i].length()-1).split(",");
+				list = new ArrayList<String>();
+				
+				rs = stm.executeQuery("show columns from "+relacion+";");
+				while(rs.next()) {
+					list.add(rs.getString(1));
+				}
+				
+				for(int j=0 ; j<array.length ; j++){
+					list.remove(array[j]);
+				}
+				for(int j=0 ; j<list.size() ; j++){
+					stm.executeUpdate("alter table "+nombreTablas+(i+1)+" drop "+list.get(j)+";");
+				}
+				
+			} 				
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return 1;
+	}
+	
+	public List<String> llave( String relacion ) {
+	
+		List<String> list = new ArrayList<String>();
+		try 
+		{
+			localConnection =  DataSourceUtils.getConnection(dataSource1);
+			stm = localConnection.createStatement();
+			rs = stm.executeQuery("SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type='PRIMARY KEY' AND t.table_schema='proyectoisw' AND t.table_name='"+relacion+"';");
+		
+			while(rs.next()) {
+				list.add(rs.getString(1));
+			}
+		
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 }
 

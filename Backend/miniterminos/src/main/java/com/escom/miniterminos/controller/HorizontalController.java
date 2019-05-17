@@ -125,10 +125,10 @@ public class HorizontalController {
 	
 	//Recibe los miniterminos a generar, y donde sse almacenaran
 	@GetMapping("/enviar{miniterminos}")
-	public String enviaMiniterminos(String miniterminos, String relacion, String sitio, String nombre) {
+	public int enviaMiniterminos(String miniterminos, String relacion, String sitio, String nombre) {
 		String[] array = miniterminos.split("\n");
 		baseDAO.enviar(sitio,nombre,relacion,array);
-		return "exito";
+		return 1;
 	}
 
 }
