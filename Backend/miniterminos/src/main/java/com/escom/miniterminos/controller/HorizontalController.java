@@ -114,7 +114,10 @@ public class HorizontalController {
 		String[] arregloMiniterminos = miniterminos.split("\n");
 		
 		for( x=0 ; x<arregloMiniterminos.length ; x++ ){
-			if( baseDAO.evaluar(relacion,arregloMiniterminos[x].substring(3)) != 0 ){
+			
+			String[] arreglo = arregloMiniterminos[x].split(":");
+			
+			if( baseDAO.evaluar(relacion,arreglo[1]) != 0 ){
 				fin += arregloMiniterminos[x] + "\n";
 			}
 		}

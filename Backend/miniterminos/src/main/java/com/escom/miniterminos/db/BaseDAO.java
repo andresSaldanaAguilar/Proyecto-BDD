@@ -173,7 +173,7 @@ public class BaseDAO {
 			try {
 				//creamos las tabla
 				stm = foreignConnection.createStatement();		
-				stm.executeUpdate("CREATE TABLE "+nombreTablas+(i+1)+" LIKE "+relacion+";");
+				stm.executeUpdate("CREATE TABLE "+nombreTablas+" LIKE "+relacion+";");
 				
 				stm = localConnection.createStatement();
 				rs = stm.executeQuery("select * FROM "+relacion+" where "+miniterminos[i].substring(4));
@@ -197,7 +197,7 @@ public class BaseDAO {
 						}						
 					}
 					stm = foreignConnection.createStatement();
-					stm.executeUpdate("insert into "+nombreTablas+(i+1)+" values ("+query.substring(0,query.length()-1)+");");
+					stm.executeUpdate("insert into "+nombreTablas+" values ("+query.substring(0,query.length()-1)+");");
 				}
 			} 				
 			catch (SQLException e) {
@@ -232,7 +232,7 @@ public class BaseDAO {
 			try {
 				//creamos las tabla
 				stm = foreignConnection.createStatement();		
-				stm.executeUpdate("CREATE TABLE "+nombreTablas+(i+1)+" LIKE "+relacion+";");
+				stm.executeUpdate("CREATE TABLE "+nombreTablas+" LIKE "+relacion+";");
 				
 				stm = localConnection.createStatement();
 				rs = stm.executeQuery("select * FROM "+relacion );
@@ -256,7 +256,7 @@ public class BaseDAO {
 						}						
 					}
 					stm = foreignConnection.createStatement();
-					stm.executeUpdate("insert into "+nombreTablas+(i+1)+" values ("+query.substring(0,query.length()-1)+");");
+					stm.executeUpdate("insert into "+nombreTablas+" values ("+query.substring(0,query.length()-1)+");");
 				}
 				
 				array = miniterminos[i].substring(6, miniterminos[i].length()-1).split(",");
@@ -271,7 +271,7 @@ public class BaseDAO {
 					list.remove(array[j]);
 				}
 				for(int j=0 ; j<list.size() ; j++){
-					stm.executeUpdate("alter table "+nombreTablas+(i+1)+" drop "+list.get(j)+";");
+					stm.executeUpdate("alter table "+nombreTablas+" drop "+list.get(j)+";");
 				}
 				
 			} 				

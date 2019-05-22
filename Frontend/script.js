@@ -139,6 +139,7 @@ $("#relacion").change(function() {
 $("#limpiarPredicados").click(function() {
 	$("#PredicadosSimples").empty();
 	$("#Miniterminos").empty();
+	$('#mini').find('option').remove();
 	
 	$("#generarFragmentos").attr("disabled","disabled");
 	$("#validarFragmentos").attr("disabled","disabled");
@@ -219,6 +220,18 @@ $("#validarFragmentos").click(function() {
 			$("#Miniterminos").empty();
 			$("#Miniterminos").append(res);
 			
+			var mini = res.split("\n");
+			var x;
+			
+			
+			for( x=0 ; x<mini.length ; x++ )
+			{
+				if( mini[x] != "" )
+				{
+					$("#mini").append(new Option(mini[x]));  
+				}
+			}
+			
         }
     });
 	
@@ -239,7 +252,7 @@ $("#enviar").click(function() {
             relacion: $("#relacion").val(),
             sitio: $("#sitio").val(),
             nombre: $("#nombre").val(),
-            miniterminos: text,
+            miniterminos: $("#mini").val(),
         },
         dataType: 'JSON', 
         success: function(res) {
@@ -320,6 +333,7 @@ $("#agregarFragmentoVer").click(function() {
 
 $("#limpiarFragmentosVer").click(function() {
 	$("#FragmentosSimples").empty();
+	$('#frag').find('option').remove();
 	
 	$("#validarFragmentosVer").attr("disabled","disabled");
 	$("#enviarV").attr("disabled","disabled");
@@ -350,6 +364,17 @@ $("#validarFragmentosVer").click(function() {
 					alert("Fragmentos validados");
 					
 					$("#enviarV").removeAttr("disabled"); 
+					
+					var frag = $("#FragmentosSimples").val().split("\n");
+					var x;
+					
+					for( x=0 ; x<frag.length ; x++ )
+					{
+						if( frag[x] != "" )
+						{
+							$("#frag").append(new Option(frag[x]));  
+						}
+					}
 				}
 				else{
 					alert("Existe un problema con los fragmentos");
@@ -370,7 +395,7 @@ $("#enviarV").click(function() {
             relacion: $("#relacionV").val(),
             sitio: $("#sitioV").val(),
             nombre: $("#nombreV").val(),
-            miniterminos: text,
+            miniterminos: $("#frag").val(),
         },
         dataType: 'JSON', 
         success: function(res) {
